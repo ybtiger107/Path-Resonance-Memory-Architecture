@@ -1,0 +1,15 @@
+{
+  "memory_count": 16,
+  "memory_id_start": 1,
+  "model": {
+    "competition": 0.05,
+    "learning_rate": 0.2,
+    "node_count": 32,
+    "passive_decay": 0.0,
+    "path_length": 8,
+    "repetitions": 5,
+    "saturation": 1.0,
+    "seed": 2026
+  }
+}
+

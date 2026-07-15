@@ -1,0 +1,29 @@
+name: Experiment proposal
+description: Propose a hypothesis, benchmark, or ablation
+title: "[Experiment]: "
+labels: [experiment]
+body:
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Falsifiable hypothesis
+    validations:
+      required: true
+  - type: textarea
+    id: protocol
+    attributes:
+      label: Protocol
+      description: Define baselines, independent variables, seeds, and held-out data.
+    validations:
+      required: true
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Metrics and success criteria
+    validations:
+      required: true
+  - type: textarea
+    id: resources
+    attributes:
+      label: Compute and data requirements
+

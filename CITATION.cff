@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use PRMA, cite the software release and the associated paper when available."
+title: "Path-Resonance Memory Architecture"
+type: software
+authors:
+  - family-names: Sim
+    given-names: Paul
+repository-code: "https://github.com/ybtiger107/Path-Resonance-Memory-Architecture"
+license: MIT
+version: 0.1.0
+date-released: 2026-07-15
+

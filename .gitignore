@@ -1,0 +1,21 @@
+__pycache__/
+*.py[cod]
+*.egg-info/
+.coverage
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+dist/
+build/
+
+# Generated experiment artifacts. Keep configs and small curated fixtures instead.
+runs/
+artifacts/
+*.npz
+
+# Editors and operating systems
+.DS_Store
+.idea/
+.vscode/
+

@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a reproducible software or model-semantics defect
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Include the command, complete config, seed, and traceback.
+    validations:
+      required: true
+  - type: input
+    id: revision
+    attributes:
+      label: Git revision
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Python, NumPy, operating system, and hardware if relevant.
+    validations:
+      required: true
+
