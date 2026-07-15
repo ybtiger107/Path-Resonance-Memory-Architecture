@@ -15,6 +15,7 @@ benchmarks, tests, and experiment provenance.
 
 - A deterministic memory-to-cycle encoder without frequency aliasing
 - A stateful path-learning model that retains weights across memories
+- An Evermemory-compatible spatial dynamical simulator with golden-fixture parity
 - Recall from any node on a learned cycle
 - Capacity, interference, overlap, and event-cost measurements
 - JSON experiment configs and machine-readable result manifests
@@ -27,12 +28,14 @@ PRMA requires Python 3.11 or newer.
 ```bash
 python -m venv .venv
 source .venv/bin/activate
-python -m pip install -e '.[dev]'
+python -m pip install '.[dev]'
 pytest
 prma experiment --config configs/baseline.json --output runs/baseline.json
+prma dynamics --config configs/legacy-dynamics-smoke.json --output runs/dynamics.json
 ```
 
-Without installation, the CLI can also be run from a source checkout:
+During active development, run directly from the source tree so every edit is
+picked up without reinstalling:
 
 ```bash
 PYTHONPATH=src python -m prma experiment \
@@ -59,6 +62,7 @@ run artifacts are ignored by Git by default; publish durable datasets through a
 versioned release or an external data registry and record their checksum.
 
 See [Architecture](docs/ARCHITECTURE.md),
+[Dynamical equations](docs/DYNAMICS.md),
 [Reproducibility](docs/REPRODUCIBILITY.md),
 [Legacy migration](docs/LEGACY_MIGRATION.md), and
 [Contributing](CONTRIBUTING.md) before extending the model.

@@ -43,6 +43,8 @@ the source of measurable interference.
 - `PathResonanceMemory.learn`: sequential state mutation
 - `PathResonanceMemory.evaluate`: cue-conditioned recall result
 - `run_capacity_experiment`: provenance-rich benchmark result
+- `DynamicalConfig`: validated legacy-compatible dynamical semantics
+- `simulate_dynamics`: dense reference engine with full or compact recording
 
 Saved model files include `model_version`; incompatible semantic changes must use
 a new version and, where practical, a migration utility.
@@ -58,3 +60,9 @@ a new version and, where practical, a migration utility.
 
 These limitations define the next experiments rather than hidden assumptions.
 
+## Dynamical compatibility layer
+
+The second model family reproduces the executable 2025 Evermemory mixed Model 2.
+It remains separate from the deterministic cycle baseline so compatibility quirks
+cannot silently alter baseline results. See `DYNAMICS.md` for equations, update
+order, array orientation, aliasing, complexity, and golden-fixture provenance.

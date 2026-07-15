@@ -13,7 +13,8 @@ from typing import Any
 import numpy as np
 
 from prma import __version__
-from prma.config import ExperimentConfig
+from prma.config import DynamicalConfig, ExperimentConfig
+from prma.dynamics import legacy_alias_period, simulate_dynamics
 from prma.metrics import mean_pairwise_edge_overlap
 from prma.model import PathResonanceMemory
 
@@ -30,6 +31,19 @@ def _git_revision() -> str | None:
     except (OSError, subprocess.SubprocessError):
         return None
     return process.stdout.strip() or None
+
+
+def _provenance() -> dict[str, Any]:
+    return {
+        "package_version": __version__,
+        "created_at_utc": datetime.now(UTC).isoformat(),
+        "git_revision": _git_revision(),
+        "environment": {
+            "python": sys.version.split()[0],
+            "numpy": np.__version__,
+            "platform": platform.platform(),
+        },
+    }
 
 
 def run_capacity_experiment(config: ExperimentConfig) -> dict[str, Any]:
@@ -60,17 +74,9 @@ def run_capacity_experiment(config: ExperimentConfig) -> dict[str, Any]:
             }
         )
 
-    return {
+    result = {
         "schema_version": 1,
         "model_version": model.MODEL_VERSION,
-        "package_version": __version__,
-        "created_at_utc": datetime.now(UTC).isoformat(),
-        "git_revision": _git_revision(),
-        "environment": {
-            "python": sys.version.split()[0],
-            "numpy": np.__version__,
-            "platform": platform.platform(),
-        },
         "config": config.to_dict(),
         "summary": {
             "memory_count": len(memory_ids),
@@ -84,6 +90,42 @@ def run_capacity_experiment(config: ExperimentConfig) -> dict[str, Any]:
         },
         "per_memory": per_memory,
     }
+    result.update(_provenance())
+    return result
+
+
+def run_dynamical_experiment(config: DynamicalConfig) -> dict[str, Any]:
+    """Run the compatible dynamics with compact storage and report diagnostics."""
+
+    trace = simulate_dynamics(config, record_synapses=False)
+    saturated = np.isclose(trace.final_weights, config.saturation)
+    result = {
+        "schema_version": 1,
+        "model_version": "evermemory-model2-mixed-f708ad1-compatible",
+        "config": config.to_dict(),
+        "summary": {
+            "total_activations": int(trace.activations.sum()),
+            "active_step_count": int(np.any(trace.activations, axis=1).sum()),
+            "saturated_directed_edges": int(saturated.sum()),
+            "nonzero_final_weights": int(np.count_nonzero(trace.final_weights)),
+            "legacy_input_alias_period": legacy_alias_period(config.reference_frequency),
+            "trace_storage_bytes": int(
+                trace.voltages.nbytes
+                + trace.activations.nbytes
+                + trace.external_inputs.nbytes
+                + trace.final_weights.nbytes
+                + trace.positions.nbytes
+                + trace.delays.nbytes
+            ),
+        },
+        "final_state": {
+            "weights": trace.final_weights.tolist(),
+            "positions": trace.positions.tolist(),
+            "delays": trace.delays.tolist(),
+        },
+    }
+    result.update(_provenance())
+    return result
 
 
 def load_experiment_config(path: str | Path) -> ExperimentConfig:
@@ -92,6 +134,14 @@ def load_experiment_config(path: str | Path) -> ExperimentConfig:
     if not isinstance(payload, dict):
         raise ValueError("experiment config must be a JSON object")
     return ExperimentConfig.from_dict(payload)
+
+
+def load_dynamical_config(path: str | Path) -> DynamicalConfig:
+    with Path(path).open(encoding="utf-8") as handle:
+        payload = json.load(handle)
+    if not isinstance(payload, dict):
+        raise ValueError("dynamical config must be a JSON object")
+    return DynamicalConfig.from_dict(payload)
 
 
 def write_result(result: dict[str, Any], path: str | Path) -> None:

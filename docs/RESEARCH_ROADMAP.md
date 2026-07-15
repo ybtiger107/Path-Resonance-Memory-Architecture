@@ -1,6 +1,6 @@
 # Research roadmap
 
-## Phase 0 — engineering baseline (current)
+## Phase 0 — engineering baseline (complete)
 
 - Persistent sequential learning and deterministic encoding
 - Capacity/interference benchmark and event-cost proxy
@@ -10,10 +10,13 @@ Exit criterion: a clean checkout reproduces the baseline result with one command
 
 ## Phase 1 — faithful dynamical model
 
-- Specify membrane, propagation, learning, saturation, and recall equations
-- Add event-driven sparse simulation and explicit spatial topology
-- Import the legacy model only through parity tests against archived fixtures
-- Test frequency encoding against aliasing and collision baselines
+- [x] Specify membrane, propagation, learning, and saturation equations
+- [x] Add explicit 1D and 2D spatial topology
+- [x] Import the legacy model through parity tests against a checksummed fixture
+- [x] Detect and test frequency-encoding alias periods
+- [x] Add compact `O(T*N + N²)` trace recording
+- [ ] Add an event-driven sparse execution engine with reference parity
+- [ ] Define dynamical recall and compare it with the deterministic baseline
 
 Exit criterion: mechanistic tests cover every equation and reproduce selected
 legacy trajectories within documented tolerances.
@@ -47,4 +50,3 @@ training becomes relevant only after a differentiable formulation is introduced.
 
 Exit criterion: software proxies and hardware measurements are clearly separated,
 with uncertainty propagated into comparisons.
-

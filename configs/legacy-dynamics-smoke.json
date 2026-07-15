@@ -1,0 +1,16 @@
+{
+  "delay_scale": 2.0,
+  "initial_weight": 0.7,
+  "input_amplitude": 2.0,
+  "input_steps": 60,
+  "learning_rate": 0.02,
+  "memory_id": 2,
+  "node_count": 8,
+  "reference_frequency": 1.0,
+  "saturation": 1.0,
+  "steps": 100,
+  "threshold": 0.1,
+  "topology": "2d",
+  "voltage_cap": 4.0,
+  "weight_decay": 0.001
+}

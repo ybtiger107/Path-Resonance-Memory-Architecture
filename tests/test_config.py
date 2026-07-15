@@ -1,6 +1,6 @@
 import pytest
 
-from prma.config import ExperimentConfig, ModelConfig
+from prma.config import DynamicalConfig, ExperimentConfig, ModelConfig
 
 
 def test_model_config_rejects_impossible_path() -> None:
@@ -16,3 +16,8 @@ def test_config_rejects_unknown_fields() -> None:
 def test_experiment_config_round_trip() -> None:
     original = ExperimentConfig(model=ModelConfig(node_count=10, path_length=5), memory_count=3)
     assert ExperimentConfig.from_dict(original.to_dict()) == original
+
+
+def test_dynamical_config_rejects_weight_above_saturation() -> None:
+    with pytest.raises(ValueError, match="initial_weight"):
+        DynamicalConfig(node_count=2, memory_id=1, steps=2, initial_weight=2.0)

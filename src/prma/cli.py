@@ -6,7 +6,13 @@ import argparse
 import json
 from pathlib import Path
 
-from prma.experiment import load_experiment_config, run_capacity_experiment, write_result
+from prma.experiment import (
+    load_dynamical_config,
+    load_experiment_config,
+    run_capacity_experiment,
+    run_dynamical_experiment,
+    write_result,
+)
 
 
 def _build_parser() -> argparse.ArgumentParser:
@@ -16,6 +22,12 @@ def _build_parser() -> argparse.ArgumentParser:
     experiment = subparsers.add_parser("experiment", help="run a sequential capacity experiment")
     experiment.add_argument("--config", type=Path, required=True)
     experiment.add_argument("--output", type=Path, required=True)
+
+    dynamics = subparsers.add_parser(
+        "dynamics", help="run the Evermemory-compatible dynamical model"
+    )
+    dynamics.add_argument("--config", type=Path, required=True)
+    dynamics.add_argument("--output", type=Path, required=True)
     return parser
 
 
@@ -24,6 +36,13 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "experiment":
         config = load_experiment_config(args.config)
         result = run_capacity_experiment(config)
+        write_result(result, args.output)
+        print(json.dumps(result["summary"], indent=2, sort_keys=True))
+        print(f"result: {args.output}")
+        return 0
+    if args.command == "dynamics":
+        config = load_dynamical_config(args.config)
+        result = run_dynamical_experiment(config)
         write_result(result, args.output)
         print(json.dumps(result["summary"], indent=2, sort_keys=True))
         print(f"result: {args.output}")
