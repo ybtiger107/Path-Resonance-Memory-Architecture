@@ -6,7 +6,7 @@ directed activation paths in a shared network. It is the successor to
 with explicit model contracts, persistent sequential learning, quantitative
 benchmarks, tests, and experiment provenance.
 
-> **Research status:** early baseline (`v0.1`). The included model is a reference
+> **Research status:** early baseline (`v0.2`). The included models are reference
 > implementation, not evidence for biological plausibility, hardware efficiency,
 > or state-of-the-art memory capacity. Such claims require the benchmark and
 > ablation program described in `docs/RESEARCH_ROADMAP.md`.
@@ -16,6 +16,7 @@ benchmarks, tests, and experiment provenance.
 - A deterministic memory-to-cycle encoder without frequency aliasing
 - A stateful path-learning model that retains weights across memories
 - An Evermemory-compatible spatial dynamical simulator with golden-fixture parity
+- A frozen-weight, partial-cue dynamical recall protocol
 - Recall from any node on a learned cycle
 - Capacity, interference, overlap, and event-cost measurements
 - JSON experiment configs and machine-readable result manifests
@@ -63,6 +64,7 @@ versioned release or an external data registry and record their checksum.
 
 See [Architecture](docs/ARCHITECTURE.md),
 [Dynamical equations](docs/DYNAMICS.md),
+[Recall protocol](docs/RECALL_PROTOCOL.md),
 [Reproducibility](docs/REPRODUCIBILITY.md),
 [Legacy migration](docs/LEGACY_MIGRATION.md), and
 [Contributing](CONTRIBUTING.md) before extending the model.

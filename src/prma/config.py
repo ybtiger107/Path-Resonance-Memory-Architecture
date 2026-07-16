@@ -138,3 +138,45 @@ class DynamicalConfig:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+
+@dataclass(frozen=True, slots=True)
+class DynamicalRecallConfig:
+    """Protocol for a frozen-weight, partial-cue dynamical recall trial."""
+
+    training: DynamicalConfig
+    cue_steps: int
+    free_steps: int
+
+    def __post_init__(self) -> None:
+        effective_training_input = min(self.training.input_steps, self.training.steps)
+        if self.cue_steps < 1:
+            raise ValueError("cue_steps must be positive")
+        if self.cue_steps >= effective_training_input:
+            raise ValueError("cue_steps must be shorter than the effective training input")
+        if self.free_steps < 1:
+            raise ValueError("free_steps must be positive")
+        if self.training.learning_rate <= 0:
+            raise ValueError("training learning_rate must be positive")
+        if self.training.input_amplitude <= 0:
+            raise ValueError("training input_amplitude must be positive")
+
+    @classmethod
+    def from_dict(cls, values: dict[str, Any]) -> Self:
+        allowed = {"training", "cue_steps", "free_steps"}
+        unknown = sorted(set(values) - allowed)
+        if unknown:
+            raise ValueError(f"unknown recall config fields: {', '.join(unknown)}")
+        payload = dict(values)
+        training = payload.get("training")
+        if not isinstance(training, dict):
+            raise ValueError("training must be a dynamical config object")
+        payload["training"] = DynamicalConfig.from_dict(training)
+        return cls(**payload)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "training": self.training.to_dict(),
+            "cue_steps": self.cue_steps,
+            "free_steps": self.free_steps,
+        }

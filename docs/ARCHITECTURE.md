@@ -45,6 +45,8 @@ the source of measurable interference.
 - `run_capacity_experiment`: provenance-rich benchmark result
 - `DynamicalConfig`: validated legacy-compatible dynamical semantics
 - `simulate_dynamics`: dense reference engine with full or compact recording
+- `DynamicalRecallConfig`: frozen-weight partial-cue protocol
+- `run_partial_cue_recall`: separate training and cold-start recall traces
 
 Saved model files include `model_version`; incompatible semantic changes must use
 a new version and, where practical, a migration utility.
@@ -66,3 +68,8 @@ The second model family reproduces the executable 2025 Evermemory mixed Model 2.
 It remains separate from the deterministic cycle baseline so compatibility quirks
 cannot silently alter baseline results. See `DYNAMICS.md` for equations, update
 order, array orientation, aliasing, complexity, and golden-fixture provenance.
+
+The first recall protocol transfers only learned weights into a cold-start run,
+freezes learning and decay, supplies a shorter same-frequency cue, and then
+observes unforced dynamics. See `RECALL_PROTOCOL.md`. Recall success metrics are
+kept separate so they cannot be implied by the simulator merely running.

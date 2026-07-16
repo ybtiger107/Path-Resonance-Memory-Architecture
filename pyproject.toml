@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "prma"
-version = "0.2.0"
+version = "0.3.0.dev0"
 description = "A reproducible research platform for path-resonance memory architectures"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -21,6 +21,9 @@ dev = [
 
 [project.scripts]
 prma = "prma.cli:main"
+
+[tool.hatch.build]
+dev-mode-dirs = ["src"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/prma"]

@@ -15,8 +15,9 @@ Exit criterion: a clean checkout reproduces the baseline result with one command
 - [x] Import the legacy model through parity tests against a checksummed fixture
 - [x] Detect and test frequency-encoding alias periods
 - [x] Add compact `O(T*N + N²)` trace recording
+- [x] Define and test a frozen-weight partial-cue recall protocol
 - [ ] Add an event-driven sparse execution engine with reference parity
-- [ ] Define dynamical recall and compare it with the deterministic baseline
+- [ ] Define dynamical recall metrics and compare with the deterministic baseline
 
 Exit criterion: mechanistic tests cover every equation and reproduce selected
 legacy trajectories within documented tolerances.
